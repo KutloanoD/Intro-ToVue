@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Vue </title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <h1>Hello Vue</h1>
+    <p>
+     Original message:   {{ message }}
+    </p>
+<p>New with exclamation: {{messageWithExclamationPoints}}</p>
+    <button v-on:click="addExclamationPoints"> Add exclamation Points</button>
+
+    <button v-on:click="clearExclamationPoints"> Clear </button>  <!-- This is a clear button -->
+
+</div>
+
+
+
+<script>
+    const {createApp, ref, computed} = Vue  // set up the Vue app
+
+    createApp({
+        setup() {  // defining things the Vue app needs here
+            const message = ref('hi')
+            const numberOfExclamationPoints = ref(1)
+
+            function addExclamationPoints() {
+                if (numberOfExclamationPoints.value < 10) {
+                    // message.value = message.value + '!';
+                    numberOfExclamationPoints.value++;
+                    console.log('This button has been clicked')
+                } else {
+                    alert('No more exclamation points!')
+                }
+            }
+
+                function clearExclamationPoints(){
+                    numberOfExclamationPoints.value =1;
+                    message.value = 'Hi!';
+                }
+
+                const messageWithExclamationPoints = computed( () => {
+                    let computedMessage = message.value;  // add exclamations based on how many numbers of exclamations created
+                    for(let x=0; x < numberOfExclamationPoints.value; x++) {
+                        computedMessage = computedMessage + '!'
+                    }
+                    return computedMessage;
+                })
+
+            return {  // refs -reactive data
+                message,
+                numberOfExclamationPoints,
+                messageWithExclamationPoints,
+                addExclamationPoints,   // function definitions
+                clearExclamationPoints
+
+            }
+        }
+    }).mount('#app')
+
+</script>
+
+</body>
+</html>

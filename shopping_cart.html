@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue shopping cart</title>
+</head>
+
+<script src="https://unpkg.com/vue@next"></script>
+
+
+</head>
+<body>
+<div id="app">
+
+    <!-- Render Data to users here -->
+    <table>
+        <tr>
+            <th>Item(s)</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total (With 5% Tax)</th>
+        </tr>
+
+        <tr>
+            <td>{{productName}}</td>
+            <td>{{unitPrice}}</td>
+            <!-- Todo - Add input -->
+            <td>
+                <input type="number" v-model.number="quantity" id="quantityInput" />
+
+                <div class="error" v-if="quantityError">{{quantityError}}</div>
+            </td>
+
+            <td>
+
+                <div v-if="quantityError">Invalid quantity</div>
+                <div v-else>${{figureOutMyTotal}}</div>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+
+</div>
+
+<script>
+    let app = Vue.createApp({
+
+        data() {
+            return {
+                productName: 'Nike shoes',
+                unitPrice: '86.90',
+                quantity: 0,
+                maxQuantity: 4,
+                quantityError: '',
+            };
+        },
+
+
+        computed: {
+            figureOutMyTotal() {
+                if (!Number.isInteger(this.quantity)) {
+                    this.quantityError = 'Quantity needs to be a valid number!';
+
+                    this.quantity = this.quantityError;
+                } else if (this.quantity < 0 || this.quantity > this.maxQuantity) {
+                    this.quantityError = 'Quantity of only 0 and 21!';
+                }
+
+                else {    // // Clear error message else
+                    this.quantityError = '';
+                }
+
+                let subTotal = this.unitPrice * this.quantity;
+
+                let tax = subTotal * 0.08;
+
+                let t = subTotal + tax;
+                return t.toFixed(2);
+            },
+        },
+    });
+
+    app.mount('#app'); // export app
+</script>
+</body>
+</html>
